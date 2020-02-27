@@ -32,8 +32,13 @@ def getProductInfo(page_urls):
             a_tag = div.find('a')
             link = a_tag['href']
             name = a_tag.text.replace('\n', '').split()  # format product name, removeing \n and extra spaces
-            price = div.find('span', class_='price').text.replace('AED ', '')
+            price = div.find('span', class_='price').text.replace('AED ', '').replace(',', '')
 
             products[' '.join(name)] = [price, link] # join name with spaces in before adding values to dict, eval exchange rate
     
     return products
+
+
+if __name__ == "__main__":
+    urls = getLinks()
+    pprint(getProductInfo(urls))
