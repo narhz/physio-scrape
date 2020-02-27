@@ -24,7 +24,7 @@ def getLinks():
 
 
 def getProductInfo(page_urls):
-    products = {'date_scanned': getDate()}
+    products = {}
     for url in page_urls:
         req = requests.get(url).content
         product_divs = bs(req, 'html.parser').find_all('div', class_='caption info-inner')
@@ -51,10 +51,13 @@ def writePickle(data, file):
         pickle.dump(data, pickle_file)
 
 
-def getDate(prev=False):
-    if not prev:
-        date_output = date.today()
+# get todays date, yesterdays date or 7 days from today
+def getDate(prev=False, future=False):
+    if prev:
+        date_output = date.today() - timedelta(1)
+    elif future:
+        date_output = date.today() + timedelta(7)
     else:
-        date_output = date.today()-timedelta(1)
+        date_output = date.today()
 
     return str(date_output)
