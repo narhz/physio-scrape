@@ -34,14 +34,6 @@ def getProductInfo(page_urls):
             name = a_tag.text.replace('\n', '').split()  # format product name, removeing \n and extra spaces
             price = div.find('span', class_='price').text.replace('AED ', '')
 
-            products[' '.join(name)] = {price:link} # join name with spaces in before adding values to dict
+            products[' '.join(name)] = [price, link] # join name with spaces in before adding values to dict, eval exchange rate
     
     return products
-
-
-def convPrice(price, currency):
-    req = requests.get('https://api.exchangerate-api.com/v4/latest/AED').json()
-    return str(float(price) * req['rates'][currency])[:5]
-
-
-pprint(getProductInfo(getLinks()))
