@@ -3,6 +3,8 @@ import requests
 from pprint import pprint
 import pickle
 from datetime import date, timedelta
+import os
+from time import sleep
 
 
 
@@ -51,13 +53,35 @@ def writePickle(data, file):
         pickle.dump(data, pickle_file)
 
 
-# get todays date, yesterdays date or 7 days from today
-def getDate(prev=False, future=False):
+# get todays date, or any date from amount
+def getDate(prev=False, future=False, amount=None):
     if prev:
-        date_output = date.today() - timedelta(1)
+        date_output = date.today() - timedelta(amount)
     elif future:
-        date_output = date.today() + timedelta(7)
+        date_output = date.today() + timedelta(amount)
     else:
         date_output = date.today()
 
     return str(date_output)
+
+
+def run(duration):
+    if os.path.exists('runtime.pkl'):
+        runtime = readPickle('runtime')
+    else:
+        runtime = {'duration': getDate(future=True, amount=duration), 'last_run': None}
+        writePickle(runtime, 'runtime')
+
+    while True:
+        if getDate() == readPickle('runtime')['last_run']:
+            print('Already ran today')
+            sleep(10)
+        else:
+            writePickle(getProductInfo(getLinks()), getDate())
+            runtime['last_run'] = getDate()
+            writePickle(runtime, 'runtime')
+
+
+
+if __name__ == "__main__":
+    run(7)
