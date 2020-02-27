@@ -42,20 +42,15 @@ def getProductInfo(page_urls):
 
 
 def readPickle(file):
-    with open(file, 'rb') as pickle_file:
+    with open(file + '.pkl', 'rb') as pickle_file:
         return pickle.load(pickle_file)
 
 
 def writePickle(data, file):
-    with open(file, 'wb') as pickle_file:
+    with open(file + '.pkl', 'wb') as pickle_file:
         pickle.dump(data, pickle_file)
 
 
 def getDate():
     current_day = datetime.now()
     return current_day.strftime('%m.%d.%y')
-
-
-
-if __name__ == "__main__":
-    pprint(getProductInfo(getLinks())['date_scanned'])
