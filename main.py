@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import requests
-import json
 from pprint import pprint
+import pickle
 
 
 
@@ -40,6 +40,16 @@ def getProductInfo(page_urls):
     return products
 
 
+def readPickle(file):
+    with open(file, 'rb') as pickle_file:
+        return pickle.load(pickle_file)
+
+
+def writePickle(data, file):
+    with open(file, 'wb') as pickle_file:
+        pickle.dump(data, pickle_file)
+
+
+
 if __name__ == "__main__":
-    urls = getLinks()
-    pprint(getProductInfo(urls))
+    pass
