@@ -34,7 +34,7 @@ def getProductInfo(page_urls):
             name = a_tag.text.replace('\n', '').split()  # format product name, removeing \n and extra spaces
             price = div.find('span', class_='price').text.replace('AED ', '').replace(',', '')
 
-            products[' '.join(name)] = [price, link] # join name with spaces in before adding values to dict, eval exchange rate
+            products[' '.join(name)] = [float(price), link] # join name with spaces in before adding values to dict, eval exchange rate
     
     return products
 
