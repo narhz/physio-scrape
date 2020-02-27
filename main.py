@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 from pprint import pprint
 import pickle
+from datetime import datetime
 
 
 
@@ -23,7 +24,7 @@ def getLinks():
 
 
 def getProductInfo(page_urls):
-    products = {}
+    products = {'date_scanned': getDate()}
     for url in page_urls:
         req = requests.get(url).content
         product_divs = bs(req, 'html.parser').find_all('div', class_='caption info-inner')
@@ -35,7 +36,7 @@ def getProductInfo(page_urls):
             price = div.find('span', class_='price').text.replace('AED ', '').replace(',', '') # remove currency and comma in order to convert to float
 
             # join name with spaces before adding values to dict, convert price str to float for price comparison later
-            products[' '.join(name)] = [float(price), link] 
+            products[' '.join(name)] = [float(price), link]
     
     return products
 
@@ -50,6 +51,11 @@ def writePickle(data, file):
         pickle.dump(data, pickle_file)
 
 
+def getDate():
+    current_day = datetime.now()
+    return current_day.strftime('%m.%d.%y')
+
+
 
 if __name__ == "__main__":
-    pass
+    pprint(getProductInfo(getLinks())['date_scanned'])
