@@ -23,15 +23,18 @@ def getLinks():
 
 
 def getProductInfo(page_urls):
-    products = []
+    products = {}
     for url in page_urls:
         req = requests.get(url).content
         product_divs = bs(req, 'html.parser').find_all('div', class_='caption info-inner')
         
         for div in product_divs:
-            name = div.find('a').text.replace('\n', '').split()  # format product name, removeing \n and extra spaces
+            a_tag = div.find('a')
+            link = a_tag['href']
+            name = a_tag.text.replace('\n', '').split()  # format product name, removeing \n and extra spaces
             price = div.find('span', class_='price').text.replace('AED ', '')
-            products.append({' '.join(name):price}) # join name with spaces in dict before appending to product list
+
+            products[' '.join(name)] = {price:link} # join name with spaces in before adding values to dict
     
     return products
 
@@ -41,3 +44,4 @@ def convPrice(price, currency):
     return str(float(price) * req['rates'][currency])[:5]
 
 
+pprint(getProductInfo(getLinks()))
