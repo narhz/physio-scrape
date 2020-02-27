@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 from pprint import pprint
 import pickle
-from datetime import datetime
+from datetime import date, timedelta
 
 
 
@@ -51,6 +51,10 @@ def writePickle(data, file):
         pickle.dump(data, pickle_file)
 
 
-def getDate():
-    current_day = datetime.now()
-    return current_day.strftime('%m.%d.%y')
+def getDate(prev=False):
+    if not prev:
+        date_output = date.today()
+    else:
+        date_output = date.today()-timedelta(1)
+
+    return str(date_output)
