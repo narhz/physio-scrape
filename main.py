@@ -36,7 +36,8 @@ def getProductInfo(page_urls):
     return products
 
 
-def convPrice(price):
+def convPrice(price, currency):
     req = requests.get('https://api.exchangerate-api.com/v4/latest/AED').json()
-    return str(float(price) * req['rates']['USD'])[:5]
+    return str(float(price) * req['rates'][currency])[:5]
+
 
